@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Gerador de Modelos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 300px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    label, select, textarea, button {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    textarea {
+      height: 200px;
+      resize: none;
+    }
+
+    #snackbar {
+      visibility: hidden;
+      background-color: #4CAF50;
+      color: #fff;
+      text-align: center;
+      border-radius: 5px;
+      padding: 8px;
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+    }
+
+    #snackbar.show {
+      visibility: visible;
+      animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    }
+
+    @keyframes fadein {
+      from { bottom: 0; opacity: 0; }
+      to { bottom: 30px; opacity: 1; }
+    }
+
+    @keyframes fadeout {
+      from { bottom: 30px; opacity: 1; }
+      to { bottom: 0; opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <label for="palavra-chave">Palavra-chave:</label>
+  <select id="palavra-chave">
+    <option value="">Selecione</option>
+    <option value="desacordo">Desacordo</option>
+    <option value="contato">Contato</option>
+    <option value="extravio">Extravio</option>
+    <option value="endereço">Endereço</option>
+    <option value="avaria">Avaria</option>
+    <option value="carta de correção">Carta de Correção</option>
+    <option value="retorno">Retorno</option>
+    <option value="enviado ao cliente">Enviado ao Cliente</option>
+  </select>
+
+  <label for="codigo-usuario">Código do Usuário:</label>
+  <select id="codigo-usuario">
+    <option value="">Selecione</option>
+    <option value="1">(1)</option>
+    <option value="2">(2)</option>
+    <option value="3">(3)</option>
+  </select>
+
+  <label for="resposta">Resposta:</label>
+  <textarea id="resposta" readonly></textarea>
+  <button onclick="copiarResposta()">Copiar Resposta</button>
+
+  <div id="snackbar">Resposta copiada!</div>
+
+  <script>
+    const saudacao = (() => {
+      const hora = new Date().getHours();
+      if (hora < 12) return "Bom dia!";
+      else if (hora < 18) return "Boa tarde!";
+      else return "Boa noite!";
+    })();
+
+    const modelos = {
+      "desacordo": (codigo) => `(${codigo})\n\n${saudacao} Segue ressalva em anexo, favor verificar e nos informar como proceder, lembrando que:\n1. Devolução - 100% do valor do frete\n2. Reentrega - 50% do valor do frete\n3. Frete FOB – Necessário liquidar o frete antes da devolução.\n\nAtt;`,
+      "contato": (codigo) => `(${codigo})\n\n${saudacao} Poderiam nos fornecer um contato ativo do cliente, houve tentativa de entrega porém sem sucesso.\n\nAtt;`,
+      "extravio": () => `${saudacao} Equipe\n\nFavor verificar se há sobra de volume em sua plataforma, estamos com falta de volumes referente ao conhecimento abaixo:\nConhecimento: \nRemetente: \nDestinatário: \nFALTA 00 VOLUMES (vol. 00/00)\n\nAtt;\n`,
+      "endereço": (codigo) => `(${codigo})\n\n${saudacao} Poderiam verificar o endereço referente ao CTe acima por favor?\n\nAtt;`,
+      "avaria": (codigo) => `(${codigo})\n${saudacao}\n\nSegue recusa e fotos da avaria em anexo, cliente realizou recusa total da mercadoria.\n\nAguardo como proceder.\n\nAtt;`,
+      "carta de correção": (codigo) => `(${codigo})\n\n${saudacao}\n\nReferente ao CTe em assunto\nNF: \nSolicito carta de correção para que possamos realizar a entrega da mercadoria.\n\nAtt;`,
+      "retorno": (codigo) => `(${codigo})\n\n${saudacao}\n\nTemos retorno sobre esse caso?\n\nAtt;`,
+      "enviado ao cliente": (codigo) => `(${codigo})\n\n${saudacao}\n\nEnviado ao cliente, aguardando retorno.\n\nAtt;`,
+    };
+
+    document.getElementById("palavra-chave").addEventListener("change", gerarResposta);
+    document.getElementById("codigo-usuario").addEventListener("change", gerarResposta);
+
+    function gerarResposta() {
+      const chave = document.getElementById("palavra-chave").value;
+      const codigo = document.getElementById("codigo-usuario").value;
+      const respostaBox = document.getElementById("resposta");
+
+      if (!chave) {
+        respostaBox.value = "";
+        return;
+      }
+
+      if (chave === "extravio") {
+        respostaBox.value = modelos[chave]();
+      } else if (modelos[chave]) {
+        respostaBox.value = modelos[chave](codigo || "");
+      } else {
+        respostaBox.value = "Desculpe, modelo não encontrado.";
+      }
+    }
+
+    function copiarResposta() {
+      const resposta = document.getElementById("resposta").value;
+      if (!resposta) return;
+
+      navigator.clipboard.writeText(resposta).then(() => {
+        const snackbar = document.getElementById("snackbar");
+        snackbar.className = "show";
+        setTimeout(() => snackbar.className = "", 3000);
+      });
+    }
+  </script>
+
+</body>
+</html>
