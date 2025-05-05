@@ -5,20 +5,57 @@
   <title>Gerador de Modelos</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      max-width: 300px;
-      margin: 0 auto;
-      padding: 20px;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: url('https://raw.githubusercontent.com/SimaoAlisson/imagens/refs/heads/main/backgroundverde.jpg') no-repeat center center fixed;
+      background-size: cover;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      padding: 30px;
+      width: 300px;
+      color: #fff;
     }
 
     label, select, textarea, button {
       width: 100%;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+
+    select, textarea, button {
+      border-radius: 8px;
+      border: none;
+      padding: 10px;
+      font-size: 14px;
     }
 
     textarea {
-      height: 200px;
+      height: 160px;
       resize: none;
+    }
+
+    button {
+      background-color: #ffffff22;
+      color: white;
+      border: 1px solid #ffffff33;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #ffffff44;
     }
 
     #snackbar {
@@ -53,30 +90,32 @@
 </head>
 <body>
 
-  <label for="palavra-chave">Palavra-chave:</label>
-  <select id="palavra-chave">
-    <option value="">Selecione</option>
-    <option value="desacordo">Desacordo</option>
-    <option value="contato">Contato</option>
-    <option value="extravio">Extravio</option>
-    <option value="endereço">Endereço</option>
-    <option value="avaria">Avaria</option>
-    <option value="carta de correção">Carta de Correção</option>
-    <option value="retorno">Retorno</option>
-    <option value="enviado ao cliente">Enviado ao Cliente</option>
-  </select>
+  <div class="glass-panel">
+    <label for="palavra-chave">Palavra-chave:</label>
+    <select id="palavra-chave">
+      <option value="">Selecione</option>
+      <option value="desacordo">Desacordo</option>
+      <option value="contato">Contato</option>
+      <option value="extravio">Extravio</option>
+      <option value="endereço">Endereço</option>
+      <option value="avaria">Avaria</option>
+      <option value="carta de correção">Carta de Correção</option>
+      <option value="retorno">Retorno</option>
+      <option value="enviado ao cliente">Enviado ao Cliente</option>
+    </select>
 
-  <label for="codigo-usuario">Código do Usuário:</label>
-  <select id="codigo-usuario">
-    <option value="">Selecione</option>
-    <option value="1">(1)</option>
-    <option value="2">(2)</option>
-    <option value="3">(3)</option>
-  </select>
+    <label for="codigo-usuario">Código do Usuário:</label>
+    <select id="codigo-usuario">
+      <option value="">Selecione</option>
+      <option value="1">(1)</option>
+      <option value="2">(2)</option>
+      <option value="3">(3)</option>
+    </select>
 
-  <label for="resposta">Resposta:</label>
-  <textarea id="resposta" readonly></textarea>
-  <button onclick="copiarResposta()">Copiar Resposta</button>
+    <label for="resposta">Resposta:</label>
+    <textarea id="resposta" readonly></textarea>
+    <button onclick="copiarResposta()">Copiar Resposta</button>
+  </div>
 
   <div id="snackbar">Resposta copiada!</div>
 
